@@ -5,13 +5,13 @@ const Navbar = () => {
   return (
     <nav
       className="w-full flex  justify-between  
-    px-5 py-4 shadow-md
+     px-6 lg:px-14 py-4 shadow-md
     "
     >
       <div>
         <h2 className="font-bold">SnapShop</h2>
       </div>
-      <div>
+      <div className="hidden lg:block">
         <ul className="flex gap-3 ">
           <li>
             <a href="">Home</a>
