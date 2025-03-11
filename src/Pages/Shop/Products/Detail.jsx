@@ -1,29 +1,43 @@
 import { Heart, Minus, Plus, Star, Truck } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getProductDetail } from "../../../store/slice/product-slice";
 
 const ProductDetail = () => {
+  const { productDetail } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getProductDetail(id));
+    }
+  }, [dispatch, id]);
+
+  console.log(productDetail);
+
   return (
     <div className="px-6 ">
       <div className="w-full  py-6  lg:px-8">Home > Mens </div>
       <div className="flex flex-col  lg:flex-row gap-7 justify-center">
         <div className="lg:w-[500px]">
-          <img src="/public/placeholder.svg" alt="" />
+          <img src={productDetail?.image || "/public/placeholder.svg"} alt="" />
         </div>
         <div className="flex flex-col   gap-2 lg:w-[800px]">
-          <h2 className="font-bold">Product full Title </h2>
+          <h2 className="font-bold">{productDetail?.title} </h2>
           <p className="text-sm">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia
-            enim accusantium a, possimus alias perspiciatis id deleniti ex,
-            obcaecati dolorem ullam labore praesentium maxime mollitia dicta
-            esse aliquam, quis soluta.
+            {
+              productDetail?.description
+            }
           </p>
           <div>
             <button className="bg-gray-200 w-full py-2 flex justify-center gap-3 items-center">
               <Truck /> Free Delivery
             </button>
           </div>
-          <p className="line-through text-gray-400">₹300</p>
-          <p className="text-xl text-red-600 font-semibold">₹800</p>
+          <p className="line-through text-gray-400">₹{productDetail?.price*2}</p>
+          <p className="text-xl text-red-600 font-semibold">₹{productDetail?.price}</p>
           <div className="flex gap-2">
             <Star fill="gold" stroke="none" />
             <Star fill="gold" stroke="none" />
