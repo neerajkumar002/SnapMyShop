@@ -1,8 +1,16 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import ProductCard from "../../../components/Shop/Products/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllProducts } from "../../../store/slice/product-slice";
 
 const ProductsListing = () => {
+  const { productList } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
+ 
   return (
     <div className="w-full px-6 ">
       <div className="w-full  py-6  lg:px-8">Home > Mens </div>
@@ -34,18 +42,17 @@ const ProductsListing = () => {
           </div>
           <div className="grid gap-3 lg:grid-cols-4 lg:place-items-center py-4">
             {/* card */}
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {productList && productList.length > 0
+              ? productList.map((item) => (
+                  <ProductCard
+                    key={item?._id}
+                    id={item?._id}
+                    title={item?.title}
+                    price={item?.price}
+                    image={item?.image}
+                  />
+                ))
+              : null}
           </div>
         </div>
       </div>
