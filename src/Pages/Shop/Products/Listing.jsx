@@ -1,58 +1,147 @@
-import React, { useEffect } from "react";
-import ProductCard from "../../../components/Shop/Products/Card";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../../../store/slice/product-slice";
+import { addToCart } from "../../../store/slice/Cart-Slice";
+import { toast } from "react-toastify";
+import ShopProductCard from "../../../components/Shop/Products/Card";
+
+const categoryData = [
+  {
+    id: 1,
+    category: "all",
+    lable: "ALL",
+  },
+  { id: 2, category: "mens-clothing", lable: "MENS" },
+  { id: 3, category: "womens-clothing", lable: "WOMENS" },
+];
+
+const sortOptions = [
+  {
+    id: "price-hightolow",
+    label: "Price - High to Low",
+  },
+  {
+    id: "price-lowtohigh",
+    label: "Price - Low to High",
+  },
+];
 
 const ProductsListing = () => {
-  const { productList } = useSelector((state) => state.product);
   const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.auth);
+  const { productList } = useSelector((state) => state.product);
+
+  const [products, setProducts] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState("all");
+  const [currentSort, setCurrentSort] = useState("");
+  const [currentActiveTab, setCurrentActiveTab] = useState(0);
+  const toastify = (message) => toast(message);
 
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
- 
+
+  useEffect(() => {
+    if (productList && productList?.length > 0) {
+      handleFilter(productList, currentCategory, currentSort);
+    }
+  }, [productList, currentCategory, currentSort]);
+
+  function handleFilter(productList, category, getSortOption) {
+    let filteredProducts =
+      category === "all"
+        ? productList
+        : productList.filter((item) => item.category === category);
+
+    if (getSortOption) {
+      const sortMethod = {
+        "price-hightolow": (a, b) => b.price - a.price,
+        "price-lowtohigh": (a, b) => a.price - b.price,
+      };
+
+      filteredProducts = [...filteredProducts].sort(sortMethod[getSortOption]);
+    }
+
+    setProducts(filteredProducts);
+  }
+
+  function handleCategoryFilter(getCategory) {
+    setCurrentCategory(getCategory);
+  }
+  function handleSortSelection(getSortOption) {
+    setCurrentSort(getSortOption);
+  }
+
+  function handleAddToCart(productId) {
+    dispatch(
+      addToCart({
+        userId: userData?.id,
+        productId: productId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if (data.payload.success) {
+        toastify("Product added in cart");
+      }
+    });
+  }
+
+  console.log(products);
+
   return (
-    <div className="w-full px-6 ">
-      <div className="w-full  py-6  lg:px-8">Home > Mens </div>
+    <div className="w-full lg:px-6 ">
+      <div className="w-full  py-3  lg:px-8">Home > Products </div>
       <div>
-        {/* sidebar */}
-        <div className="hidden">
-          <div className="">
-            <h3>Category</h3>
-            <label htmlFor="">
-              <input type="radio" />
-              Mens
-            </label>
-            <label htmlFor="">
-              <input type="radio" />
-              Womens
-            </label>
-          </div>
-        </div>
         {/* main products */}
         <div>
-          <div className="flex justify-between lg:px-8  ">
-            <p>Products</p>
-            <select name="" id="" className="border px-2 py-1">
-              <option value="">Sort By</option>
-              <option value="">Ratings</option>
-              <option value="">Price - High to Low</option>
-              <option value="">Price - Low to High</option>
-            </select>
+          <div>
+            <div className="flex flex-col lg:flex-row gap-3 lg:items-center justify-between lg:px-8  ">
+              <div className="flex gap-3">
+                {categoryData &&
+                  categoryData.map((btn, index) => (
+                    <button
+                      key={btn.id}
+                      onClick={() => handleCategoryFilter(btn.category)}
+                      className="border px-2 rounded-md font-semibold cursor-pointer bg-gray-400 active:bg-amber-600"
+                    >
+                      {btn.lable}
+                    </button>
+                  ))}
+              </div>
+              <select
+                name=""
+                id=""
+                className="border px-2 py-1"
+                onChange={(e) => handleSortSelection(e.target.value)}
+              >
+                <option value="" hidden>
+                  Sort By: Relavent
+                </option>
+                {sortOptions &&
+                  sortOptions.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.label}
+                    </option>
+                  ))}
+              </select>
+            </div>
           </div>
-          <div className="grid gap-3 lg:grid-cols-4 lg:place-items-center py-4">
-            {/* card */}
-            {productList && productList.length > 0
-              ? productList.map((item) => (
-                  <ProductCard
-                    key={item?._id}
-                    id={item?._id}
-                    title={item?.title}
-                    price={item?.price}
-                    image={item?.image}
-                  />
-                ))
-              : null}
+
+          <div className="grid gap-3 grid-cols-2  lg:grid-cols-4 lg:place-items-center lg:px-8 py-4">
+            {products && products.length > 0 ? (
+              products.map((item) => (
+                <ShopProductCard
+                  key={item?._id}
+                  id={item?._id}
+                  title={item?.title}
+                  price={item?.price}
+                  image={item?.image}
+                  handleAddToCart={handleAddToCart}
+                />
+              ))
+            ) : (
+              <p>No Products Available</p>
+            )}
           </div>
         </div>
       </div>
