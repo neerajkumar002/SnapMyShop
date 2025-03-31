@@ -1,11 +1,20 @@
-import { ShoppingCart, User } from "lucide-react";
-import React from "react";
+import { AlignJustify, ShoppingCart, User } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "../Sidebar/Sidebar";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleCloseSidebar = () => {
+    setIsOpen(false);
+    console.log("false");
+  };
+
   return (
     <nav
       className="w-full flex  justify-between  
-     px-6 lg:px-14 py-4 shadow-md
+     lg:px-14 py-4 
     "
     >
       <div>
@@ -14,24 +23,32 @@ const Navbar = () => {
       <div className="hidden lg:block">
         <ul className="flex gap-3 ">
           <li>
-            <a href="">Home</a>
+            <Link to="">Home</Link>
           </li>
           <li>
-            <a href="">Products</a>
+            <Link to="/products">Products</Link>
           </li>
           <li>
-            <a href="">About</a>
+            <Link to="">About</Link>
           </li>
           <li>
-            <a href="">Contact </a>
+            <Link to="">Contact </Link>
           </li>
         </ul>
       </div>
       <div className="flex items-center gap-2 ">
-        <ShoppingCart size={20} />
-        <User size={20} />
-        <a href="">Login</a>
+        <Link to="/cart">
+          <ShoppingCart size={20} />
+        </Link>
+
+        <User size={20} className="cursor-pointer" />
+        <Link to="/auth/login">Login</Link>
+        <button onClick={() => setIsOpen(true)} className=" lg:hidden">
+          <AlignJustify />
+        </button>
       </div>
+
+      <Sidebar isOpen={isOpen} handleCloseSidebar={handleCloseSidebar} />
     </nav>
   );
 };
