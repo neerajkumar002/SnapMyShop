@@ -10,7 +10,7 @@ export const registerUser = createAsyncThunk(
   async (formData) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/register`,
+        `${import.meta.env.VITE_BASE_API_URL}/auth/register`,
         formData
       );
       return response.data;
@@ -24,14 +24,27 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk("auth/login", async (formData) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
+      `${import.meta.env.VITE_BASE_API_URL}/auth/login`,
       formData,
       { withCredentials: true }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
+  }
+});
+
+export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_API_URL}/auth/checkAuth`,
+      {
+        withCredentials: true,
+      }
+    ); 
+    return response.data;
+  } catch (error) {
+    console.log("Error: Check Auth", error);
   }
 });
 
@@ -41,25 +54,37 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state, action) => {
+      .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData = action.payload;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state) => {
         state.isLoading = true;
         state.userData = null;
       })
-      .addCase(loginUser.pending, (state, action) => {
+      .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData = action.payload;
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state) => {
+        state.isLoading = true;
+        state.userData = null;
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log(action.payload);
+        state.userData = action.payload.success ? action.payload.user : null;
+      })
+      .addCase(checkAuth.rejected, (state) => {
         state.isLoading = true;
         state.userData = null;
       });
