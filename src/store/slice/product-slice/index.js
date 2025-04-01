@@ -12,7 +12,7 @@ export const fetchAllProducts = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/admin/products/get`
+        `${import.meta.env.VITE_BASE_API_URL}/admin/products/get`
       );
       return response.data;
     } catch (error) {
@@ -27,7 +27,7 @@ export const getProductDetail = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/admin/products/${id}`
+        `${import.meta.env.VITE_BASE_API_URL}/admin/products/${id}`
       );
       return response.data;
     } catch (error) {
