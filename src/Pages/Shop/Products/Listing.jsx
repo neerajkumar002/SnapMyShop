@@ -4,6 +4,7 @@ import { fetchAllProducts } from "../../../store/slice/product-slice";
 import { addToCart } from "../../../store/slice/Cart-Slice";
 import { toast } from "react-toastify";
 import ShopProductCard from "../../../components/Shop/Products/Card";
+import Shimmer from "../../../components/Shop/Shimmer/Shimmer";
 
 const categoryData = [
   {
@@ -29,12 +30,12 @@ const sortOptions = [
 const ProductsListing = () => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
-  const { productList } = useSelector((state) => state.product);
+  const { productList, isLoading } = useSelector((state) => state.product);
 
   const [products, setProducts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("all");
   const [currentSort, setCurrentSort] = useState("");
-  const [currentActiveTab, setCurrentActiveTab] = useState(0);
+  const [currentActiveTab, setCurrentActiveTab] = useState("all");
   const toastify = (message) => toast(message);
 
   useEffect(() => {
@@ -86,7 +87,7 @@ const ProductsListing = () => {
     });
   }
 
-  console.log(products);
+  if (isLoading) return <Shimmer />;
 
   return (
     <div className="w-full lg:px-6 ">
@@ -101,8 +102,13 @@ const ProductsListing = () => {
                   categoryData.map((btn, index) => (
                     <button
                       key={btn.id}
-                      onClick={() => handleCategoryFilter(btn.category)}
-                      className="border px-2 rounded-md font-semibold cursor-pointer bg-gray-400 active:bg-amber-600"
+                      onClick={() => {
+                        handleCategoryFilter(btn.category);
+                        setCurrentActiveTab(btn.category);
+                      }}
+                      className={` px-2 rounded-md font-semibold cursor-pointer transition-all duration-300 active:bg-black
+                        ${currentActiveTab === btn.category ? "bg-black text-white" : "bg-gray-400"}
+                        `}
                     >
                       {btn.lable}
                     </button>
