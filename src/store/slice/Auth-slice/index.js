@@ -28,6 +28,7 @@ export const loginUser = createAsyncThunk("auth/login", async (formData) => {
       formData,
       { withCredentials: true }
     );
+    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -41,7 +42,7 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
       {
         withCredentials: true,
       }
-    ); 
+    );
     return response.data;
   } catch (error) {
     console.log("Error: Check Auth", error);
