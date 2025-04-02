@@ -36,7 +36,7 @@ const ProductsListing = () => {
   const [currentCategory, setCurrentCategory] = useState("all");
   const [currentSort, setCurrentSort] = useState("");
   const [currentActiveTab, setCurrentActiveTab] = useState("all");
-  const toastify = (message) => toast(message);
+ 
 
   useEffect(() => {
     dispatch(fetchAllProducts());
@@ -74,6 +74,10 @@ const ProductsListing = () => {
   }
 
   function handleAddToCart(productId) {
+    if (!userData) {
+      toast.warn("Please Login First!");
+      return;
+    }
     dispatch(
       addToCart({
         userId: userData?.id,
@@ -82,7 +86,7 @@ const ProductsListing = () => {
       })
     ).then((data) => {
       if (data.payload.success) {
-        toastify("Product added in cart");
+        toast.success("Product added in cart");
       }
     });
   }
@@ -107,7 +111,11 @@ const ProductsListing = () => {
                         setCurrentActiveTab(btn.category);
                       }}
                       className={` px-2 rounded-md font-semibold cursor-pointer transition-all duration-300 active:bg-black
-                        ${currentActiveTab === btn.category ? "bg-black text-white" : "bg-gray-200"}
+                        ${
+                          currentActiveTab === btn.category
+                            ? "bg-black text-white"
+                            : "bg-gray-200"
+                        }
                         `}
                     >
                       {btn.lable}
