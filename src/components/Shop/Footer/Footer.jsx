@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="">
+    <footer className="lg:px-14">
       <div className="flex flex-col lg:flex-row lg:justify-between">
         <div className="lg:w-[500px] ">
           <h3 className="font-semibold  text-3xl ">SNAPSHOP</h3>
