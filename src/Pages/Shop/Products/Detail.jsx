@@ -3,8 +3,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProductDetail } from "../../../store/slice/product-slice";
-import ReviewCard from "../Review/ReviewCard";
+
 import ProductDetailsShimmer from "../../../components/Shop/Shimmer/ProductDetailsShimmer";
+import ReviewCard from "../../../components/Shop/Review/ReviewCard";
 
 const ProductDetail = () => {
   const { productDetail, isLoading } = useSelector((state) => state.product);
@@ -16,7 +17,6 @@ const ProductDetail = () => {
       dispatch(getProductDetail(id));
     }
   }, [dispatch, id]);
- 
 
   if (isLoading) return <ProductDetailsShimmer />;
 
