@@ -107,7 +107,7 @@ const ProductsListing = () => {
                         setCurrentActiveTab(btn.category);
                       }}
                       className={` px-2 rounded-md font-semibold cursor-pointer transition-all duration-300 active:bg-black
-                        ${currentActiveTab === btn.category ? "bg-black text-white" : "bg-gray-400"}
+                        ${currentActiveTab === btn.category ? "bg-black text-white" : "bg-gray-200"}
                         `}
                     >
                       {btn.lable}
