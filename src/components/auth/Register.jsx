@@ -1,11 +1,23 @@
-import {  Lock, Mail, User2 } from "lucide-react";
+import { Lock, Mail, User2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { registerUser } from "../../store/slice/Auth-slice";
+import { toast, ToastContainer } from "react-toastify";
 const Register = () => {
-  const { register, handleSubmit } = useForm();
+  const dispatch = useDispatch();
+  const notify = (message) => toast(message);
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: { fullName: "", email: "", password: "" },
+  });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    dispatch(registerUser(data)).then((data) => {
+      if (data?.payload?.success) {
+        reset();
+        notify(data?.payload?.message);
+      }
+    });
   };
 
   return (
@@ -50,17 +62,17 @@ const Register = () => {
         </div>
         <div className="flex flex-col gap-2">
           <button className="cursor-pointer bg-green-500 text-white py-2 rounded-md font-semibold">
-            {" "}
             Sign Up
           </button>
         </div>
       </form>
       <p className="px-2 py-5 text-gray-400">
         Already have a account?{" "}
-        <Link to="/auth/login" className="text-red-400">
+        <Link to="/auth/login" className="text-red-400 ">
           Login
         </Link>
       </p>
+      <ToastContainer autoClose={2000} />
     </div>
   );
 };
