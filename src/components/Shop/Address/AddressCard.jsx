@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const AddressCard = () => {
+const AddressCard = ({
+  id,
+  fullName,
+  address,
+  city,
+  state,
+  pincode,
+  phone,
+  item,
+  setCurrentSelectedAddress,
+}) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="address-card border px-3 py-2 rounded-md leading-5">
+    <div
+      onClick={() => setCurrentSelectedAddress(item)}
+      className="address-card border px-1 py-2 rounded-md leading-5"
+    >
       <div className="text-sm flex justify-between ">
-        <label htmlFor="" >
-          <input type="radio" name="" id="" /> Delivering to
-        </label>
-        <button>Edit</button>
+        <label className="pl-4">Delivering to</label>
+        <button onClick={() => navigate("/address/edit")}>Edit</button>
       </div>
       <div className="px-4">
-        <p className="font-semibold text-[1rem]">Neeraj Kumar</p>
-        <p className="text-[0.8rem] ">Dehradun, Uttarakhand - 212121</p>
-        <p className="font-semibold text-[0.9rem]">Mob- 8211232433</p>
+        <p className="font-semibold text-[1rem]">{fullName}</p>
+        <p className="text-[0.8rem] ">
+          {address}, {city}, {state} - {pincode}
+        </p>
+        <p className="font-semibold text-[0.9rem]">Mob- {phone}</p>
       </div>
     </div>
   );
