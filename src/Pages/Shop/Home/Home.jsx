@@ -1,4 +1,4 @@
-import Footer from "../../../components/Shop/Footer/Footer";
+import bannerImage from "/public/pexels-jmendezrf-1536619.jpg";
 
 const ShopHome = () => {
   return (
@@ -23,11 +23,7 @@ const ShopHome = () => {
           </div>
         </div>
         <div>
-          <img
-            src="/public/pexels-jmendezrf-1536619.jpg"
-            alt=""
-            className="w-full h-full"
-          />
+          <img src={bannerImage} alt="" className="w-full h-full" />
         </div>
       </div>
 
@@ -114,7 +110,7 @@ const ShopHome = () => {
             <button className="bg-black text-white px-3 py-3">Subscribe</button>
           </div>
         </div>
-      </section> 
+      </section>
     </div>
   );
 };
