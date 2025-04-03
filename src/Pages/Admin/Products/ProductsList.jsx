@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../../../store/slice/product-slice";
 import AdminProductItem from "../../../components/Admin/Products/ProductItem";
+import AdminProductItemShimmer from "../../../components/Admin/Products/Shimmer";
 
 const AdminProductsList = () => {
   const [searchProduct, setSearchProduct] = useState("");
@@ -36,20 +37,25 @@ const AdminProductsList = () => {
           placeholder="Enter Product id"
           onChange={(e) => setSearchProduct(e.target.value)}
           className="border py-1 px-1 rounded-md w-full lg:w-[500px]"
+          disabled={productList.length === 0}
         />
       </div>
-      <div className="flex flex-col gap-3 py-2">
-        {products?.map((item) => (
-          <AdminProductItem
-            key={item?._id}
-            id={item?._id}
-            image={item?.image}
-            title={item?.title}
-            price={item?.price}
-            category={item?.category}
-          />
-        ))}
-      </div>
+      {productList.length === 0 ? (
+        <AdminProductItemShimmer />
+      ) : (
+        <div className="flex flex-col gap-3 py-2">
+          {products?.map((item) => (
+            <AdminProductItem
+              key={item?._id}
+              id={item?._id}
+              image={item?.image}
+              title={item?.title}
+              price={item?.price}
+              category={item?.category}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
