@@ -7,6 +7,7 @@ const initialState = {
   productDetail: null,
 };
 
+//add new product thunk
 export const addNewProduct = createAsyncThunk(
   "/product/addNewProduct",
   async (formData) => {
@@ -21,6 +22,22 @@ export const addNewProduct = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log("Error: Fetch products", error);
+    }
+  }
+);
+
+//delete product thunk
+export const deleteProduct = createAsyncThunk(
+  "/product/deleteProduct",
+  async (id) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_BASE_API_URL}/admin/products/${id}`
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
     }
   }
 );
