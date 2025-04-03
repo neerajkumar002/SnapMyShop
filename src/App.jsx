@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { checkAuth } from "./store/slice/Auth-slice";
 import Auth from "./Pages/auth/Auth";
 import ProtectedLayout from "./Layout/ProtectedLayout";
-import { ToastContainer } from "react-toastify";
+import { Bounce, ToastContainer } from "react-toastify";
 import Unauthorized from "./Pages/Shop/Unauthorized/Unauthorized";
 import NotFound from "./Pages/Shop/NotFound/NotFound";
 import ProductDetail from "./Pages/Shop/Products/Detail";
@@ -88,7 +88,19 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
         </Route>
       </Routes>
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Bounce}
+      />
     </BrowserRouter>
   );
 }
