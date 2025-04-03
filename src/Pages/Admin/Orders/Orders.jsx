@@ -20,7 +20,7 @@ const AdminOrders = () => {
   }, [dispatch]);
 
   return (
-    <div className="px-10 py-3">
+    <div className="px-10 py-3 w-full  ">
       <div className="flex justify-between items-center">
         <p className="font-semibold text-xl">Orders</p>
         <div className="flex justify-between border rounded-full  ">
@@ -35,19 +35,22 @@ const AdminOrders = () => {
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-2 items-center py-4">
+      <div className="w-full flex flex-col gap-2   py-4">
         {ordersList && ordersList.length > 0 ? (
-          ordersList.map((item) => (
-            <AdminOrderItem
-              key={item?._id}
-              id={item?._id}
-              totalAmount={item?.totalAmount}
-              totalItems={item?.orderItems?.length}
-              status={item?.status}
-              setShowModal={setShowModal}
-              setCurrentOrderId={setCurrentOrderId}
-            />
-          ))
+          ordersList.map(
+            ({ _id, totalAmount, cartItems, orderDate, orderStatus }) => (
+              <AdminOrderItem
+                key={_id}
+                id={_id}
+                totalAmount={totalAmount}
+                totalItems={cartItems}
+                orderStatus={orderStatus}
+                setShowModal={setShowModal}
+                orderDate={orderDate}
+                setCurrentOrderId={setCurrentOrderId}
+              />
+            )
+          )
         ) : (
           <p>No Orders</p>
         )}
