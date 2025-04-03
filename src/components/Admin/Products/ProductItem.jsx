@@ -1,5 +1,12 @@
 import { SquarePen, Trash2Icon } from "lucide-react";
-const AdminProductItem = ({ id, image, title, price, category }) => {
+const AdminProductItem = ({
+  id,
+  image,
+  title,
+  price,
+  category,
+  handleProductDelete,
+}) => {
   return (
     <div className=" bg-white shadow-md flex justify-between gap-3 rounded-md ">
       <div className="flex gap-3">
@@ -33,7 +40,10 @@ const AdminProductItem = ({ id, image, title, price, category }) => {
             className="text-gray-500 hover:text-green-600 transition-colors duration-300"
           />
         </button>
-        <button className=" cursor-pointer  ">
+        <button
+          onClick={() => handleProductDelete(id)}
+          className=" cursor-pointer  "
+        >
           <Trash2Icon
             size={27}
             className="text-gray-500 hover:text-red-600 transition-colors duration-300"
