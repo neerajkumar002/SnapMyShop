@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../../../store/slice/product-slice";
 import AdminProductItem from "../../../components/Admin/Products/ProductItem";
 import AdminProductItemShimmer from "../../../components/Admin/Products/Shimmer";
+import { deleteProduct } from "../../../store/admin/product-slice";
+import { toast } from "react-toastify";
 
 const AdminProductsList = () => {
   const [searchProduct, setSearchProduct] = useState("");
@@ -28,6 +30,15 @@ const AdminProductsList = () => {
     setProducts(filtered);
   }, [searchProduct]);
 
+  function handleProductDelete(id) {
+    dispatch(deleteProduct(id)).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchAllProducts());
+        toast.success(data?.payload?.message);
+      }
+    });
+  }
+
   return (
     <div className="py-5 px-2">
       <div>
@@ -52,6 +63,7 @@ const AdminProductsList = () => {
               title={item?.title}
               price={item?.price}
               category={item?.category}
+              handleProductDelete={handleProductDelete}
             />
           ))}
         </div>
