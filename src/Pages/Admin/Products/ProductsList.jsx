@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../../../store/slice/product-slice";
 import { SquarePen, Trash2Icon } from "lucide-react";
@@ -49,6 +49,8 @@ const AdminProductItem = ({ id, image, title, price, category }) => {
 };
 
 const AdminProductsList = () => {
+  const [searchProduct, setSearchProduct] = useState("");
+  const [products, setProducts] = useState([]);
   const { productList } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -56,7 +58,20 @@ const AdminProductsList = () => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-  console.log(productList);
+  useEffect(() => {
+    if (productList.length > 0) {
+      setProducts(productList);
+    }
+  }, [productList]);
+
+  useEffect(() => {
+    const filtered = productList.filter((item) =>
+      item._id.toLowerCase().includes(searchProduct.toLowerCase())
+    );
+
+    setProducts(filtered);
+  }, [searchProduct]);
+
   return (
     <div className="py-5 px-2">
       <div>
@@ -64,11 +79,12 @@ const AdminProductsList = () => {
         <input
           type="text"
           placeholder="Enter Product id"
+          onChange={(e) => setSearchProduct(e.target.value)}
           className="border py-1 px-1 rounded-md w-full lg:w-[500px]"
         />
       </div>
       <div className="flex flex-col gap-3 py-2">
-        {productList?.map((item) => (
+        {products?.map((item) => (
           <AdminProductItem
             key={item?._id}
             id={item?._id}
