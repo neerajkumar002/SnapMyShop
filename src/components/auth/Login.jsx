@@ -1,25 +1,42 @@
 import { Lock, Mail, User2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { loginUser } from "../../store/slice/Auth-slice";
+import { checkAuth, loginUser } from "../../store/slice/Auth-slice";
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  console.log(isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
+
   const { register, handleSubmit } = useForm({
     defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     dispatch(loginUser(data)).then((data) => {
-      if (data.payload.success) {
+      if (data.payload.success && data?.payload?.user?.role === "user") {
         navigate("/");
+      } else if (
+        data.payload.success &&
+        data?.payload?.user?.role === "admin"
+      ) {
+        navigate("/admin/list");
       }
     });
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="py-5">
