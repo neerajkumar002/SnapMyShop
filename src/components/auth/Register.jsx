@@ -1,11 +1,13 @@
 import { Lock, Mail, User2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { registerUser } from "../../store/slice/Auth-slice";
 import { toast, ToastContainer } from "react-toastify";
 const Register = () => {
   const dispatch = useDispatch();
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const notify = (message) => toast(message);
   const { register, handleSubmit, reset } = useForm({
     defaultValues: { fullName: "", email: "", password: "" },
