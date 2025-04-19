@@ -10,7 +10,6 @@ const AdminOrderItem = ({
   setShowModal,
   setCurrentOrderId,
 }) => {
-  console.log(orderStatus);
   return (
     <div
       onClick={() => {
@@ -37,7 +36,15 @@ const AdminOrderItem = ({
       </div>
 
       <div className="pt-3 pr-3">
-        <p className="bg-green-500 rounded-full px-2 text-white mt-4">
+        <p
+          className={`${
+            orderStatus === "confirmed"
+              ? "bg-green-600"
+              : orderStatus === "cancelled"
+              ? "bg-red-400"
+              : "bg-black"
+          } rounded-full px-2 text-white mt-4`}
+        >
           {orderStatus}
         </p>
       </div>
