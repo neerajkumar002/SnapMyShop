@@ -1,34 +1,41 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNewProduct } from "../../../store/admin/product-slice";
+import placeholder from "/public/upload.png";
+import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 const AddProductForm = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
   const dispatch = useDispatch();
-  console.log(selectedImage);
+  const { isLoading } = useSelector((state) => state.adminProduct);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const { register, handleSubmit, reset } = useForm();
 
   function handleImageChange(e) {
-    const file = e.target.files[0];
-    if (file) setSelectedImage(URL.createObjectURL(file));
+    const imageFile = e.target.files[0];
+    if (imageFile) {
+      setSelectedImage(URL.createObjectURL(imageFile));
+    }
   }
 
-  const { register, handleSubmit } = useForm();
+  console.log(isLoading);
 
-  const handleAddProductForm =async (data) => {
+  const handleAddProductForm = (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("price", data.price);
     formData.append("category", data.category);
-    if (data.file && data.file.length > 0) {
-      formData.append("image", data.file[0]);
-    }
+    formData.append("image", data.image[0]);
 
-    for (let x of formData.entries()) {
-      console.log(x);
-    }
-    dispatch(addNewProduct(formData));
+    dispatch(addNewProduct(formData)).then((data) => {
+      if (data?.payload?.success) {
+        toast.success(data?.payload?.message);
+        reset();
+        setSelectedImage(null);
+      }
+    });
   };
 
   return (
@@ -45,8 +52,8 @@ const AddProductForm = () => {
             <div className="  w-[100px] h-[100px] cursor-pointer">
               <label htmlFor="productImage">
                 <img
-                  src={selectedImage || "/public/upload.png"}
-                  alt=""
+                  src={selectedImage || placeholder}
+                  alt={selectedImage || placeholder}
                   className="w-full h-full"
                 />
               </label>
@@ -54,8 +61,11 @@ const AddProductForm = () => {
             <input
               type="file"
               id="productImage"
-              {...register("file", { required: true })}
-              onChange={(e) => handleImageChange(e)}
+              {...register("image", {
+                required: true,
+                onChange: (e) => handleImageChange(e),
+              })}
+              accept="image/*"
               className="hidden"
             />
           </div>
@@ -113,7 +123,11 @@ const AddProductForm = () => {
           </div>
           <div className="">
             <button className="bg-blue-300 w-full py-2 font-bold text-white rounded-md hover:bg-blue-500 cursor-pointer ">
-              ADD
+              {isLoading ? (
+                <ClipLoader color="blue" size={20} loading={isLoading} />
+              ) : (
+                "ADD"
+              )}
             </button>
           </div>
         </form>
