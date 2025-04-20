@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import AddressCard from "../../../components/Shop/Address/AddressCard";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from "../../../store/slice/Cart-Slice";
+import {
+  getCart,
+  updateCartItemQuantity,
+} from "../../../store/slice/Cart-Slice";
 import CartItem from "../../../components/Shop/Cart/CartItem";
 import { fetchAllAddresses } from "../../../store/slice/Address-slice";
 import { toast } from "react-toastify";
@@ -19,13 +22,6 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toastify = (message) => toast(message);
-
-  function handleStripePayment() {
-    if (currentSelectedAddress === null) {
-      toastify("Please select one address to proceed");
-      return;
-    }
-  }
 
   useEffect(() => {
     if (userData) {
@@ -67,6 +63,10 @@ const Checkout = () => {
   };
 
   function handleStripePayment() {
+    if (currentSelectedAddress === null) {
+      toast.warn("Please select one address to proceed");
+      return;
+    }
     dispatch(createOrder(orderData)).then((data) => console.log(data));
   }
 
@@ -75,7 +75,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="py-5 px-14">
+    <div className="py-5 lg:px-14">
       <div className="">Home > Cart >Checkout</div>
 
       <div className="  ">
@@ -103,6 +103,7 @@ const Checkout = () => {
                   pincode={item?.pincode}
                   item={item}
                   setCurrentSelectedAddress={setCurrentSelectedAddress}
+                  currentSelectedAddress={currentSelectedAddress}
                 />
               ))
             : null}
@@ -153,7 +154,11 @@ const Checkout = () => {
             <div className="text-right">
               {" "}
               <button
-                onClick={() => handleStripePayment()}
+                onClick={
+                  cart?.items?.length === 0
+                    ? () => navigate("/products")
+                    : () => handleStripePayment()
+                }
                 className="bg-green-500 text-white px-2 py-2 rounded-md cursor-pointer"
               >
                 Proceed to pay
