@@ -29,6 +29,7 @@ const sortOptions = [
 
 const ProductsListing = () => {
   const dispatch = useDispatch();
+
   const { userData } = useSelector((state) => state.auth);
   const { productList, isLoading } = useSelector((state) => state.product);
 
@@ -36,7 +37,6 @@ const ProductsListing = () => {
   const [currentCategory, setCurrentCategory] = useState("all");
   const [currentSort, setCurrentSort] = useState("");
   const [currentActiveTab, setCurrentActiveTab] = useState("all");
- 
 
   useEffect(() => {
     dispatch(fetchAllProducts());
@@ -74,6 +74,7 @@ const ProductsListing = () => {
   }
 
   function handleAddToCart(productId) {
+    console.log(productId);
     if (!userData) {
       toast.warn("Please Login First!");
       return;
