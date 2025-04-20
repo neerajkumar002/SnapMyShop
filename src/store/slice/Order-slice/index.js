@@ -75,6 +75,23 @@ export const fetchOrderDetails = createAsyncThunk(
   }
 );
 
+// update order status
+export const updateOrderStatus = createAsyncThunk(
+  "order/updateOrderStatus",
+  async ({ orderId, orderStatus }) => {
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_BASE_API_URL}/admin/orders/update/${orderId}`,
+        { orderStatus }
+      );
+ 
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "orderSlice",
   initialState,
@@ -117,6 +134,17 @@ const orderSlice = createSlice({
         state.orderDetails = action.payload.data;
       })
       .addCase(fetchOrderDetails.rejected, (state) => {
+        state.isLoading = true;
+        state.orderDetails = null;
+      })
+      .addCase(updateOrderStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orderDetails = action.payload.data;
+      })
+      .addCase(updateOrderStatus.rejected, (state) => {
         state.isLoading = true;
         state.orderDetails = null;
       });

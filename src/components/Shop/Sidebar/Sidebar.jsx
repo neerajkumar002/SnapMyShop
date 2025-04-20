@@ -6,7 +6,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     <div
       className={`${
         isOpen ? "translate-x-0 w-full" : "translate-x-full "
-      } transition-transform duration-300 fixed right-0 top-0   bg-white h-screen`}
+      } transition-transform duration-300 fixed right-0 top-0  z-10  bg-white h-screen`}
     >
       <div>
         <button

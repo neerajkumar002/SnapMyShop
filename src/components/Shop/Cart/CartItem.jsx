@@ -1,16 +1,19 @@
-import { Delete, Minus, Plus, Trash2Icon, TrashIcon } from "lucide-react";
+import { Minus, Plus, Trash2Icon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+
+import { toast } from "react-toastify";
+import placeholderImage from "/public/placeholder.svg";
 import {
   deleteCartItem,
+  getCart,
   updateCartItemQuantity,
 } from "../../../store/slice/Cart-Slice";
-import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 const CartItem = ({ image, title, quantity, price, item }) => {
   const { userData } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const notify = (message) => toast(message);
-
+  const location = useLocation();
   //update cart item quantity
   function updateCartItemQty(getCartItem, typeOfAction) {
     console.log(getCartItem, typeOfAction);
@@ -25,7 +28,8 @@ const CartItem = ({ image, title, quantity, price, item }) => {
       })
     ).then((data) => {
       if (data.payload.success) {
-        notify("Product quantity updated!");
+        dispatch(getCart(userData?.id));
+        toast.success("Product quantity updated!");
       }
     });
   }
@@ -37,21 +41,27 @@ const CartItem = ({ image, title, quantity, price, item }) => {
         userId: userData?.id,
         productId: getCartItem.productId,
       })
-    );
+    ).then((data) => {
+      console.log(data);
+      if (data?.payload?.success) {
+        dispatch(getCart(userData?.id));
+      }
+    });
   }
-
   return (
     <div className="w-full flex justify-between  h-[100px] shadow">
       <div className=" flex gap-5 items-center ">
-        <div className=" h-full">
+        <div className="w-[80px] h-[100px]">
           <img
-            src={image || "/public/placeholder.svg"}
-            alt=""
-            className="h-full"
+            src={image || placeholderImage}
+            alt={title}
+            className="w-full h-full"
           />
         </div>
         <div className="flex flex-col gap-2">
-          <p className="font-semibold">{title}</p>
+          <p className="font-semibold text-sm">
+            {title.length > 20 ? title.slice(0, 20) + "..." : title}
+          </p>
           <p>
             Quantity : <span className="font-semibold">{quantity}</span>{" "}
           </p>
@@ -60,36 +70,43 @@ const CartItem = ({ image, title, quantity, price, item }) => {
           </p>
         </div>
       </div>
-      <div className="pt-1 text-center">
-        <p>Quantity:</p>{" "}
-        <div className="flex gap-3 border mt-4">
-          <button
-            onClick={() => updateCartItemQty(item, "minus")}
-            className={`px-1  ${
-              quantity === 1
-                ? "opacity-30 cursor-not-allowed"
-                : "cursor-pointer"
-            }`}
-            disabled={quantity === 1}
-          >
-            <Minus />
-          </button>
-          <p className="font-bold">{quantity}</p>
-          <button
-            onClick={() => updateCartItemQty(item, "plus")}
-            className="px-1 cursor-pointer"
-          >
-            <Plus />
-          </button>
+      <div className="flex gap-2">
+        {" "}
+        <div className="pt-1 text-center px-2">
+          <p>Quantity:</p>{" "}
+          <div className="flex gap-3 border mt-4">
+            <button
+              onClick={() => updateCartItemQty(item, "minus")}
+              className={`px-1  ${
+                quantity === 1
+                  ? "opacity-30 cursor-not-allowed"
+                  : "cursor-pointer"
+              } z-0`}
+              disabled={quantity === 1}
+            >
+              <Minus />
+            </button>
+            <p className="font-bold">{quantity}</p>
+            <button
+              onClick={() => updateCartItemQty(item, "plus")}
+              className="px-1 cursor-pointer"
+            >
+              <Plus />
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="pt-3 pr-3">
-        <button
-          onClick={() => handleDeleteCartItem(item)}
-          className="text-red-600 cursor-pointer"
-        >
-          <Trash2Icon />
-        </button>
+        {location.pathname !== "/checkout" ? (
+          <div className="pt-2 pr-3">
+            <button
+              onClick={() => handleDeleteCartItem(item)}
+              className="text-red-600 cursor-pointer"
+            >
+              <Trash2Icon />
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

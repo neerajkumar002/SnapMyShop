@@ -55,17 +55,19 @@ const AdminProductsList = () => {
         <AdminProductItemShimmer />
       ) : (
         <div className="flex flex-col gap-3 py-2">
-          {products?.map((item) => (
-            <AdminProductItem
-              key={item?._id}
-              id={item?._id}
-              image={item?.image}
-              title={item?.title}
-              price={item?.price}
-              category={item?.category}
-              handleProductDelete={handleProductDelete}
-            />
-          ))}
+          {products
+            ?.map((item) => (
+              <AdminProductItem
+                key={item?._id}
+                id={item?._id}
+                image={item?.image}
+                title={item?.title}
+                price={item?.price}
+                category={item?.category}
+                handleProductDelete={handleProductDelete}
+              />
+            ))
+            .reverse()}
         </div>
       )}
     </div>

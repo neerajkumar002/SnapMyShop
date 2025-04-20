@@ -1,59 +1,92 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewProduct } from "../../../store/admin/product-slice";
-import placeholder from "/public/upload.png";
+import {
+  getProductById,
+  updateProductDetails,
+} from "../../../store/admin/product-slice";
+import { useNavigate, useParams } from "react-router-dom";
+import placeholderImage from "/public/upload.png";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 
-const AddProductForm = () => {
+const EditProductForm = () => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.adminProduct);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const { register, handleSubmit, reset } = useForm();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const { productDetail, isLoading } = useSelector(
+    (state) => state.adminProduct
+  );
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getProductById(id));
+    }
+  }, [dispatch, id]);
 
   function handleImageChange(e) {
-    const imageFile = e.target.files[0];
-    if (imageFile) {
-      setSelectedImage(URL.createObjectURL(imageFile));
-    }
+    const file = e.target.files[0];
+    if (file) setSelectedImage(URL.createObjectURL(file));
   }
 
-  console.log(isLoading);
-
-  const handleAddProductForm = (data) => {
+  const handleEditProductForm = (data) => {
+    console.log(data);
+    console.log("edit");
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("price", data.price);
     formData.append("category", data.category);
-    formData.append("image", data.image[0]);
+    if (data.file?.[0]) {
+      formData.append("image", data.file[0]);
+    } else if (productDetail?.image) {
+      formData.append("image", productDetail?.image);
+    }
 
-    dispatch(addNewProduct(formData)).then((data) => {
-      if (data?.payload?.success) {
-        toast.success(data?.payload?.message);
-        reset();
-        setSelectedImage(null);
+    dispatch(updateProductDetails({ formData: formData, productId: id })).then(
+      (data) => {
+        if (data?.payload?.success) {
+          dispatch(getProductById(id));
+          toast.success(data?.payload?.message);
+          navigate("/admin/list");
+        }
       }
-    });
+    );
   };
 
+  useEffect(() => {
+    if (productDetail) {
+      reset({
+        title: productDetail?.title || "",
+        description: productDetail?.description || "",
+        price: productDetail?.price || "",
+        category: productDetail?.category || "",
+        image: productDetail?.image || "",
+      });
+    }
+  }, [productDetail, reset]);
+
   return (
-    <div className="  ">
+    <div className="py-3  ">
       <div className="px-3 py-2 ">
-        <h3 className="font-semibold text-xl">Add New Product</h3>
+        <h3 className="font-semibold text-xl">Edit Product</h3>
       </div>
       <div>
         <form
-          onSubmit={handleSubmit(handleAddProductForm)}
+          onSubmit={handleSubmit(handleEditProductForm)}
           className="  flex flex-col gap-3 px-3"
         >
           <div>
             <div className="  w-[100px] h-[100px] cursor-pointer">
               <label htmlFor="productImage">
                 <img
-                  src={selectedImage || placeholder}
-                  alt={selectedImage || placeholder}
+                  src={
+                    selectedImage || productDetail?.image || placeholderImage
+                  }
+                  alt=""
                   className="w-full h-full"
                 />
               </label>
@@ -61,11 +94,7 @@ const AddProductForm = () => {
             <input
               type="file"
               id="productImage"
-              {...register("image", {
-                required: true,
-                onChange: (e) => handleImageChange(e),
-              })}
-              accept="image/*"
+              {...register("file", { onChange: (e) => handleImageChange(e) })}
               className="hidden"
             />
           </div>
@@ -122,12 +151,11 @@ const AddProductForm = () => {
             </div>
           </div>
           <div className="">
-            <button className="bg-blue-300 w-full py-2 font-bold text-white rounded-md hover:bg-blue-500 cursor-pointer ">
-              {isLoading ? (
-                <ClipLoader color="blue" size={20} loading={isLoading} />
-              ) : (
-                "ADD"
-              )}
+            <button
+              type="submit"
+              className="bg-blue-300 w-full py-2 font-bold text-white rounded-md hover:bg-blue-500 cursor-pointer "
+            >
+              {isLoading ? <ClipLoader color="blue" size={20} /> : "Edit"}
             </button>
           </div>
         </form>
@@ -136,4 +164,4 @@ const AddProductForm = () => {
   );
 };
 
-export default AddProductForm;
+export default EditProductForm;

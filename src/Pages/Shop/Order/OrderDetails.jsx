@@ -3,17 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchOrderDetails } from "../../../store/slice/Order-slice";
 import { format } from "date-fns";
+import placeholderImage from "/public/placeholder.svg";
 
 const OrderDetailItem = ({ title, image, price, quantity }) => {
   return (
-    <div className="w-full flex justify-between lg:w-[800px] h-[80px] shadow rounded-md">
+    <div className="w-full flex justify-between   h-[80px] shadow rounded-md">
       <div className=" flex lg:gap-3 items-center    ">
         <div className="w-[100px] h-[80px]">
-          <img
-            src={image || "/public/placeholder.svg "}
-            alt=""
-            className=" h-full"
-          />
+          <img src={image || placeholderImage} alt="" className=" h-full" />
         </div>
         <div className="flex flex-col gap-5">
           <p className="font-semibold">{title}</p>
@@ -50,9 +47,9 @@ const ShopOrderDetails = () => {
   console.log(orderDetails);
   return (
     <div className="py-5">
-      <div className="px-8  py-5 lg:px-14">Home > Orders</div>
-      <div className="flex flex-col items-center px-8">
-        <div className="  lg:w-[800px]">
+      <div className="   py-5 lg:px-14">Home > Orders</div>
+      <div className="flex flex-col items-center lg:px-14">
+        <div className="w-full  ">
           <div className="flex flex-col gap-2 ">
             <h1 className="font-bold text-2xl ">Order Details</h1>
             <div className="lg:flex gap-3">
@@ -71,7 +68,17 @@ const ShopOrderDetails = () => {
             </div>
 
             <p>
-              <span className="bg-green-400 rounded-full px-3 text-white py-1 text-sm ">
+              <span
+                className={` rounded-full px-3 text-white py-1 text-sm ${
+                  orderDetails?.orderStatus === "pending"
+                    ? "bg-orange-500"
+                    : orderDetails?.orderStatus === "confirmed"
+                    ? "bg-blue-500"
+                    : orderDetails?.orderStatus === "delivered"
+                    ? "bg-green-500"
+                    : "bg-red-500"
+                }`}
+              >
                 {orderDetails?.orderStatus}
               </span>
             </p>
@@ -91,20 +98,22 @@ const ShopOrderDetails = () => {
           </div>
           <div>
             <p className="text-gray-400">Shipped to</p>
-            <p className="font-semibold">
-              {orderDetails?.addressInfo?.fullName}
-            </p>
-            <p>rani pur more sector 2 gali no 1 haridwar</p>
-            <p>{orderDetails?.addressInfo?.address}</p>
-            <p>{orderDetails?.addressInfo?.city}</p>
-            <p>{orderDetails?.addressInfo?.state}</p>
-            <p>{orderDetails?.addressInfo?.pincode}</p>
-            <p className="text-gray-400">
-              Mob:{" "}
-              <span className="text-black">
-                {orderDetails?.addressInfo?.phone}
-              </span>
-            </p>
+            <div className="text-gray-700">
+              <p className="font-semibold">
+                {orderDetails?.addressInfo?.fullName}
+              </p>
+              <p>rani pur more sector 2 gali no 1 haridwar</p>
+              <p>{orderDetails?.addressInfo?.address}</p>
+              <p>{orderDetails?.addressInfo?.city}</p>
+              <p>{orderDetails?.addressInfo?.state}</p>
+              <p>{orderDetails?.addressInfo?.pincode}</p>
+              <p className="text-gray-400">
+                Mob:{" "}
+                <span className="text-black">
+                  {orderDetails?.addressInfo?.phone}
+                </span>
+              </p>
+            </div>
           </div>
           <div className="  flex flex-col gap-2 mt-4  ">
             <p className="py-2  text-gray-500 border-b border-gray-300">

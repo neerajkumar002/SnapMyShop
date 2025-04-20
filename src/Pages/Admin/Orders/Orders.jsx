@@ -1,14 +1,18 @@
-import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, CookingPot } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllOrdersForAdmin } from "../../../store/admin/order-slice";
 import OrderDetailsModal from "../../../components/Admin/Order/OrderDetailsModal";
 import AdminOrderItem from "../../../components/Admin/Order/OrderItem";
+import { updateOrderStatus } from "../../../store/slice/Order-slice";
 
 const AdminOrders = () => {
+  const { ordersList, isLoading } = useSelector((state) => state.adminOrders);
   const [showModal, setShowModal] = useState(false);
+  const [searchOrder, setSearchOrder] = useState("");
+  const [orders, setOrders] = useState([]);
   const [currentOrderId, setCurrentOrderId] = useState(null);
-  const { ordersList } = useSelector((state) => state.adminOrders);
+
   const dispatch = useDispatch();
 
   function closeModal() {
@@ -19,25 +23,51 @@ const AdminOrders = () => {
     dispatch(fetchAllOrdersForAdmin());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (ordersList) {
+      setOrders(ordersList);
+    }
+  }, [ordersList]);
+
+  useEffect(() => {
+    const filtered = ordersList.filter((item) =>
+      item._id.toLowerCase().includes(searchOrder.toLowerCase())
+    );
+    setOrders(filtered);
+  }, [searchOrder]);
+
+  function handleUpdateOrderStatus(id, orderStatus) {
+    console.log(orderStatus);
+    dispatch(updateOrderStatus({ orderId: id, orderStatus: orderStatus })).then(
+      (data) => {
+        if (data?.payload?.success) {
+          dispatch(fetchAllOrdersForAdmin());
+        }
+      }
+    );
+  }
+
+  
   return (
     <div className="px-10 py-3 w-full  ">
       <div className="flex justify-between items-center">
         <p className="font-semibold text-xl">Orders</p>
-        <div className="flex justify-between border rounded-full  ">
+        <div className="  border rounded-full lg:w-[500px]  ">
           <input
             type="search"
             placeholder="Order Id"
+            value={searchOrder}
+            onChange={(e) => {
+              setSearchOrder(e.target.value);
+            }}
             className="border-none outline-none py-2 px-2 w-full"
           />
-          <button className="bg-red-400 py-2 rounded-tr-full rounded-br-full px-3 text-white  ">
-            Search
-          </button>
         </div>
       </div>
 
       <div className="w-full flex flex-col gap-2   py-4">
-        {ordersList && ordersList.length > 0 ? (
-          ordersList.map(
+        {orders?.length > 0 ? (
+          orders.map(
             ({ _id, totalAmount, cartItems, orderDate, orderStatus }) => (
               <AdminOrderItem
                 key={_id}
@@ -56,7 +86,11 @@ const AdminOrders = () => {
         )}
       </div>
       {showModal && (
-        <OrderDetailsModal id={currentOrderId} closeModal={closeModal} />
+        <OrderDetailsModal
+          id={currentOrderId}
+          closeModal={closeModal}
+          handleUpdateOrderStatus={handleUpdateOrderStatus}
+        />
       )}
     </div>
   );

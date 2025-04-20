@@ -1,6 +1,36 @@
+import { useDispatch, useSelector } from "react-redux";
 import bannerImage from "/public/pexels-jmendezrf-1536619.jpg";
+import { useEffect } from "react";
+import { fetchAllProducts } from "../../../store/slice/product-slice";
+import { Link } from "react-router-dom";
+
+const LatestCollectionProductItem = ({ id, title, image, price }) => {
+  return (
+    <Link to={`/products/${id}`} className="w-[200px] h-[300px]  ">
+      <div className="h-[250px]">
+        <img
+          src={image || "/public/placeholder.svg"}
+          alt=""
+          className="h-full w-full hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+      <div className="">
+        <p className="py-1 text-sm">{title.slice(0, 20)}</p>
+        <p>₹ {price}</p>
+      </div>
+    </Link>
+  );
+};
 
 const ShopHome = () => {
+  const dispatch = useDispatch();
+
+  const { productList } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
+
   return (
     <div className="lg:px-13">
       <div
@@ -39,10 +69,24 @@ const ShopHome = () => {
             industry. Lorem Ipsum has been the.
           </p>
         </div>
+        <div className="flex gap-3 py-3">
+          {[...productList]
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 6)
+            .map((item) => (
+              <LatestCollectionProductItem
+                key={item?._id}
+                id={item?._id}
+                image={item?.image}
+                title={item?.title}
+                price={item?.price}
+              />
+            ))}
+        </div>
       </div>
 
       {/* best sellers */}
-      <div className="py-5">
+      {/* <div className="py-5">
         <div className="text-center ">
           <h3 className="text-3xl">
             <span className="text-gray-500">BEST </span>
@@ -53,7 +97,7 @@ const ShopHome = () => {
             industry. Lorem Ipsum has been the.
           </p>
         </div>
-      </div>
+      </div> */}
 
       <section className="flex flex-col  gap-3 w-full items-center  mb-30 ">
         <div className="  flex flex-col xl:flex-row    ">

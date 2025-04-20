@@ -1,6 +1,9 @@
 import { CirclePlus, LogOut, Menu, Package, Rows3, Scale } from "lucide-react";
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { logoutUser } from "../../../store/slice/Auth-slice";
+import { toast } from "react-toastify";
 
 const menuItems = [
   {
@@ -21,7 +24,20 @@ const menuItems = [
 ];
 
 const AdminSidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
+
+  function handleLogoutUser() {
+    dispatch(logoutUser()).then((data) => {
+      if (data?.payload?.success) {
+        toast.success(data?.payload?.message);
+        navigate("/auth/login");
+      }
+    });
+  }
+
   return (
     <div
       className="  transition-all duration-300 "
@@ -60,7 +76,10 @@ const AdminSidebar = () => {
             </div>
           </NavLink>
         ))}
-        <NavLink className="flex items-center transition-all duration-300  hover:bg-blue-400  rounded-tr-full rounded-br-full    h-8 py-2 gap-2 ">
+        <button
+          onClick={() => handleLogoutUser()}
+          className="flex items-center transition-all duration-300  hover:bg-blue-400  rounded-tr-full rounded-br-full    h-8 py-2 gap-2 "
+        >
           <div className="ml-2">
             <LogOut />
           </div>
@@ -71,7 +90,7 @@ const AdminSidebar = () => {
           >
             Logout
           </div>
-        </NavLink>
+        </button>
       </div>
     </div>
   );

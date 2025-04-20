@@ -22,7 +22,7 @@ const ShopOrder = () => {
       <div>
         <h1 className="font-bold text-3xl text-center">Your Orders</h1>
       </div>
-      <div className="flex flex-col items-center py-10 gap-3  px-5 ">
+      <div className="flex flex-col items-center py-10 gap-3  lg:px-13 ">
         {orderList && orderList.length > 0
           ? orderList.map((item) => (
               <ShopOrderItem
@@ -30,7 +30,7 @@ const ShopOrder = () => {
                 id={item?._id}
                 totalAmount={item?.totalAmount}
                 totalItems={item?.cartItems.length}
-                orderStatus={item?.orderStatus}
+                orderStatus={item?.orderStatus} 
                 orderDate={item?.orderDate}
               />
             ))

@@ -27,7 +27,7 @@ const orderStatus = [
   },
 ];
 
-const OrderDetailsModal = ({ id, closeModal }) => {
+const OrderDetailsModal = ({ id, closeModal, handleUpdateOrderStatus }) => {
   const { orderDetails } = useSelector((state) => state.adminOrders);
   const dispatch = useDispatch();
 
@@ -42,7 +42,7 @@ const OrderDetailsModal = ({ id, closeModal }) => {
       className="fixed top-0 left-0 bg-gray-500/30 w-full h-screen flex justify-center items-center"
       onClick={(e) => e.target === e.currentTarget && closeModal()}
     >
-      <div className=" bg-white w-[600px] rounded-md py-2 px-4 z-30">
+      <div className=" bg-white w-[450px] lg:w-[600px] rounded-md py-2 px-4 z-30">
         <div className="flex flex-col gap-2 ">
           <h1 className="font-bold text-2xl ">Order Details</h1>
           <div className="lg:flex gap-3">
@@ -64,7 +64,7 @@ const OrderDetailsModal = ({ id, closeModal }) => {
             <select
               name=""
               id=""
-              onChange={(e) => console.log(e.target.value)}
+              onChange={(e) => handleUpdateOrderStatus(id, e.target.value)}
               className="border outline-none rounded-md p-1"
             >
               <option value="" className="uppercase" hidden>
