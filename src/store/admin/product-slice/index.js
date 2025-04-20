@@ -15,10 +15,9 @@ export const addNewProduct = createAsyncThunk(
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}/admin/products/add`,
-        { formData }
+        formData
       );
 
-      console.log(response);
       return response.data;
     } catch (error) {
       console.log("Error: Fetch products", error);
@@ -42,8 +41,44 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
-const productSlice = createSlice({
-  name: "productSlice",
+//get product by id
+export const getProductById = createAsyncThunk(
+  "/product/getProductById",
+  async (id) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_API_URL}/admin/products/${id}`
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+// edit prodct
+
+export const updateProductDetails = createAsyncThunk(
+  "/product/editProduct",
+  async ({ formData, productId }) => {
+    try {
+      const response = await axios.put(
+        `${
+          import.meta.env.VITE_BASE_API_URL
+        }/admin/products/update/${productId}`,
+        formData
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+const adminProductSlice = createSlice({
+  name: "adminProductSlice",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -57,8 +92,30 @@ const productSlice = createSlice({
       })
       .addCase(addNewProduct.rejected, (state) => {
         state.isLoading = true;
+      })
+      .addCase(getProductById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProductById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.productDetail = action.payload.data;
+      })
+      .addCase(getProductById.rejected, (state) => {
+        state.isLoading = true;
+        state.productDetail = null;
+      })
+      .addCase(updateProductDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProductDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.productDetail = action.payload.data;
+      })
+      .addCase(updateProductDetails.rejected, (state) => {
+        state.isLoading = true;
+        state.productDetail = null;
       });
   },
 });
 
-export default productSlice.reducer;
+export default adminProductSlice.reducer;
