@@ -15,7 +15,7 @@ export const fetchAllOrdersForAdmin = createAsyncThunk(
         `${import.meta.env.VITE_BASE_API_URL}/admin/orders/list`
       );
 
-      console.log("orders", response.data);
+     
       return response.data;
     } catch (error) {
       console.log(error);
@@ -30,7 +30,7 @@ export const fetchOrderDetailsForAdmin = createAsyncThunk(
         `${import.meta.env.VITE_BASE_API_URL}/admin/orders/details/${id}`
       );
 
-      console.log(response.data);
+    
       return response.data;
     } catch (error) {
       console.log(error);
