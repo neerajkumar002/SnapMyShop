@@ -6,11 +6,17 @@ import { getProductDetail } from "../../../store/slice/product-slice";
 
 import ProductDetailsShimmer from "../../../components/Shop/Shimmer/ProductDetailsShimmer";
 import ReviewCard from "../../../components/Shop/Review/ReviewCard";
+import { addToCart } from "../../../store/slice/Cart-Slice";
+import { toast } from "react-toastify";
 
 const ProductDetail = () => {
-  const { productDetail, isLoading } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const { id } = useParams();
+
+  const { productDetail, isLoading } = useSelector((state) => state.product);
+  const { userData } = useSelector((state) => state.auth);
+
+  console.log(userData);
 
   useEffect(() => {
     if (id) {
@@ -19,6 +25,22 @@ const ProductDetail = () => {
   }, [dispatch, id]);
 
   if (isLoading) return <ProductDetailsShimmer />;
+
+  function handleAddToCart() {
+    if (!userData) {
+      toast.warn("Please login first!");
+      return;
+    } else {
+      dispatch(
+        addToCart({ userId: userData?.id, productId: id, quantity: 1 })
+      ).then((data) => {
+        console.log(data);
+        if (data?.payload?.success) {
+          toast.success(data?.payload?.message);
+        }
+      });
+    }
+  }
 
   return (
     <div className="lg:px-6 ">
@@ -49,18 +71,13 @@ const ProductDetail = () => {
             <Star fill="gold" stroke="none" />
           </div>
           <div className="flex items-center gap-3 py-5">
-            Quantity
-            <div className="flex  items-center  border">
-              <button className="px-3 py-2 text-2xl font-semibold">
-                <Minus />
-              </button>
-              <div>1</div>
-              <button className="px-3 py-2 text-2xl font-semibold">
-                <Plus />
-              </button>
-            </div>
-            <button className="bg-red-400 py-2 px-2">Add To Cart</button>
-            <button className="border border-gray-300 py-2 px-2">
+            <button
+              onClick={() => handleAddToCart()}
+              className="bg-red-400 py-2 px-2 cursor-pointer"
+            >
+              Add To Cart
+            </button>
+            <button className="border border-gray-300 py-2 px-2 cursor-pointer">
               <Heart />
             </button>
           </div>
