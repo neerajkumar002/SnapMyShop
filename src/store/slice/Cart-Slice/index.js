@@ -9,7 +9,7 @@ const initialState = {
 export const addToCart = createAsyncThunk(
   "/cart/add",
   async ({ userId, productId, quantity }) => {
-    try { 
+    try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}/cart/add`,
         { userId, productId, quantity }
@@ -27,8 +27,7 @@ export const getCart = createAsyncThunk("cart/get", async (userId) => {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_BASE_API_URL}/cart/${userId}`
-    );
-
+    ); 
     return response.data;
   } catch (error) {
     console.log(error);
