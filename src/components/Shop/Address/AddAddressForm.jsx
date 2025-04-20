@@ -21,7 +21,12 @@ const AddAddressForm = () => {
   const dispatch = useDispatch();
   const toastify = (message) => toast(message);
 
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm({mode:"onSubmit"});
 
   const onSubmit = (data) => {
     if (addressList.length >= 3) {
@@ -30,7 +35,6 @@ const AddAddressForm = () => {
     } else {
       const addressData = { ...data, userId: userData?.id };
       dispatch(addAddress(addressData)).then((data) => {
-        console.log(data);
         if (data?.payload?.success) {
           toastify(data?.payload?.message);
           reset();
@@ -45,6 +49,8 @@ const AddAddressForm = () => {
     }
   }, [dispatch, userData]);
 
+ 
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -56,7 +62,7 @@ const AddAddressForm = () => {
         </label>
         <input
           type="text"
-          {...register("fullName", { required: true })}
+          {...register("fullName", { required: "Full name required!" })}
           placeholder="Full Name (Required)*"
           className="px-1 py-3 border outline-none rounded-md"
         />
