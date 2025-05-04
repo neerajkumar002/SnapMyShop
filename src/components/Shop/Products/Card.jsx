@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart, Star } from "lucide-react";
-const ShopProductCard = ({ id, image, title, price, handleAddToCart }) => {
+import StarRatingComponent from "../Review/StarRatingComponent";
+const ShopProductCard = ({
+  id,
+  image,
+  title,
+  price,
+  averageReview,
+  handleAddToCart,
+}) => {
   return (
     <div className="bg-white shadow-md w-full ">
       <Link to={`${id}`}>
@@ -13,18 +21,14 @@ const ShopProductCard = ({ id, image, title, price, handleAddToCart }) => {
         </div>
       </Link>
       <div className="flex flex-col gap-2 py-3 px-3">
-        <p className="h-10">{title}</p>
+        <p className="h-10">{title.slice(0,30)}</p>
         <p className=" flex justify-between">
           <span>₹{price}</span>
           <span className="line-through">₹{price * 2}</span>
         </p>
-        <div className="flex gap-1">
-          <Star fill="gold" stroke="none" />
-          <Star fill="gold" stroke="none" />
-          <Star fill="gold" stroke="none" />
-          <Star fill="gold" stroke="none" />
-          <Star fill="gold" stroke="none" />
-          <span>(39)</span>
+        <div className="flex items-center gap-1">
+          <StarRatingComponent rating={averageReview} />
+          <span className="text-[1.4rem]">({averageReview})</span>
         </div>
       </div>
       <div className="pt-4">
