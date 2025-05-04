@@ -6,8 +6,11 @@ import { Link } from "react-router-dom";
 
 const LatestCollectionProductItem = ({ id, title, image, price }) => {
   return (
-    <Link to={`/products/${id}`} className="w-[200px] h-[300px]  ">
-      <div className="h-[250px]">
+    <Link
+      to={`/products/${id}`}
+      className="w-full lg:w-[200px]    lg:h-[300px]  "
+    >
+      <div className="h-[300px] lg:h-[250px]">
         <img
           src={image || "/public/placeholder.svg"}
           alt=""
@@ -69,7 +72,7 @@ const ShopHome = () => {
             industry. Lorem Ipsum has been the.
           </p>
         </div>
-        <div className="flex gap-3 py-3">
+        <div className="flex flex-col lg:flex-row gap-3 py-3">
           {[...productList]
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .slice(0, 6)
