@@ -17,8 +17,7 @@ const ShopOrder = () => {
   console.log(orderList);
 
   return (
-    <div className="py-5">
-      <div className="px-14">Home > Orders</div>
+    <div className="py-5"> 
       <div>
         <h1 className="font-bold text-3xl text-center">Your Orders</h1>
       </div>
