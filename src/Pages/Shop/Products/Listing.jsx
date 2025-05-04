@@ -5,6 +5,7 @@ import { addToCart } from "../../../store/slice/Cart-Slice";
 import { toast } from "react-toastify";
 import ShopProductCard from "../../../components/Shop/Products/Card";
 import Shimmer from "../../../components/Shop/Shimmer/Shimmer";
+import Breadcrumbs from "../../../components/common/Breadcrumbs";
 
 const categoryData = [
   {
@@ -96,7 +97,6 @@ const ProductsListing = () => {
 
   return (
     <div className="w-full lg:px-6 ">
-      <div className="w-full  py-3  lg:px-8">Home > Products </div>
       <div>
         {/* main products */}
         <div>
@@ -151,6 +151,7 @@ const ProductsListing = () => {
                   title={item?.title}
                   price={item?.price}
                   image={item?.image}
+                  averageReview={item?.averageReview}
                   handleAddToCart={handleAddToCart}
                 />
               ))
