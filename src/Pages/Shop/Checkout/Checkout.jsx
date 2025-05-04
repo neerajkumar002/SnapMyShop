@@ -76,8 +76,7 @@ const Checkout = () => {
 
   return (
     <div className="py-5 lg:px-14">
-      <div className="">Home > Cart >Checkout</div>
-
+     
       <div className="  ">
         <div className="flex justify-between items-center py-3">
           <p className="font-semibold"> Select an address .</p>{" "}
