@@ -47,7 +47,6 @@ const ShopOrderDetails = () => {
   console.log(orderDetails);
   return (
     <div className="py-5">
-      <div className="   py-5 lg:px-14">Home > Orders</div>
       <div className="flex flex-col items-center lg:px-14">
         <div className="w-full  ">
           <div className="flex flex-col gap-2 ">
