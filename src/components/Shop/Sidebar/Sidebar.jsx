@@ -11,7 +11,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       <div>
         <button
           onClick={() => setIsOpen(false)}
-          className="flex py-3 items-center text-xl px-2 gap-1"
+          className="flex py-3 items-center text-xl px-2 gap-1 cursor-pointer"
         >
           <ChevronLeft className="text-gray-400" /> Back
         </button>
