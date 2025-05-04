@@ -64,9 +64,12 @@ const Navbar = () => {
       </div>
       <div className="flex items-center gap-2 ">
         {userData?.role === "admin" && <Link to="/admin/list">Dashboard</Link>}
-        <Link to="/cart">
-          <ShoppingCart size={23} />
-        </Link>
+
+        {userData && userData?.role === "user" && (
+          <Link to="/cart">
+            <ShoppingCart size={23} />
+          </Link>
+        )}
 
         {userData && userData?.role === "user" && (
           <div className="relative flex items-center">
@@ -97,8 +100,11 @@ const Navbar = () => {
             )}
           </div>
         )}
-        {!userData && <Link to="/auth/login">Login</Link>}
-        <button onClick={() => setIsOpen(true)} className=" lg:hidden">
+        {!userData && <Link to="/auth/login" className="text-xl">Login</Link>}
+        <button
+          onClick={() => setIsOpen(true)}
+          className=" lg:hidden cursor-pointer"
+        >
           <AlignJustify />
         </button>
       </div>
