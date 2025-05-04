@@ -33,7 +33,7 @@ const AddressList = () => {
   }
 
   return (
-    <div className="px-14">
+    <div className="lg:px-14">
       {" "}
       <div className="flex justify-between items-center py-3 ">
         <p className="font-semibold text-xl">My Addresses </p>{" "}
