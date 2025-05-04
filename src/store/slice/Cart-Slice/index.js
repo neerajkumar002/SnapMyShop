@@ -27,7 +27,8 @@ export const getCart = createAsyncThunk("cart/get", async (userId) => {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_BASE_API_URL}/cart/${userId}`
-    ); 
+    );
+
     return response.data;
   } catch (error) {
     console.log(error);
