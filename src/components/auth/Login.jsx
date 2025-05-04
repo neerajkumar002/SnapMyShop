@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { checkAuth, loginUser } from "../../store/slice/Auth-slice";
+import { loginUser } from "../../store/slice/Auth-slice";
 import { useEffect } from "react";
 
 const Login = () => {
@@ -11,7 +11,6 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
-  console.log(isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -25,13 +24,8 @@ const Login = () => {
 
   const onSubmit = (data) => {
     dispatch(loginUser(data)).then((data) => {
-      if (data.payload.success && data?.payload?.user?.role === "user") {
+      if (data.payload.success) {
         navigate("/");
-      } else if (
-        data.payload.success &&
-        data?.payload?.user?.role === "admin"
-      ) {
-        navigate("/admin/list");
       }
     });
   };
