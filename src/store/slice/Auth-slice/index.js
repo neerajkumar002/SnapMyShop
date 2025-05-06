@@ -37,7 +37,7 @@ export const loginUser = createAsyncThunk("auth/login", async (formData) => {
 
 export const logoutUser = createAsyncThunk("auth/logout", async () => {
   try {
-    const response = await axios.post(
+    const response = await axios.get(
       `${import.meta.env.VITE_BASE_API_URL}/auth/logout`,
       {},
       { withCredentials: true }
