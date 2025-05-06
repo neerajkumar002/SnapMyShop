@@ -1,6 +1,6 @@
 import { Lock, Mail, User2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../../store/slice/Auth-slice";
 import { toast, ToastContainer } from "react-toastify";
