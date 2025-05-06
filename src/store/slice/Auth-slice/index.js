@@ -37,7 +37,7 @@ export const loginUser = createAsyncThunk("auth/login", async (formData) => {
 
 export const logoutUser = createAsyncThunk("auth/logout", async () => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       `${import.meta.env.VITE_BASE_API_URL}/auth/logout`,
       {},
       { withCredentials: true }
@@ -105,16 +105,8 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.userData = null;
       })
-      .addCase(logoutUser.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(logoutUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.isAuthenticated = false;
-        state.userData = null;
-      })
-      .addCase(logoutUser.rejected, (state) => {
-        state.isLoading = true;
         state.isAuthenticated = false;
         state.userData = null;
       });
