@@ -1,12 +1,68 @@
-# React + Vite
+ # 🛍️ SnapShop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ **SanpShop** is a modern ecommerce frontend built with React. This project includes a clean UI, responsive design, and  features like product listing, search, cart, and more 
 
-Currently, two official plugins are available:
+ ---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ ### 🚀 Features
 
-## Expanding the ESLint configuration
+ - 🖼️ Product listing with categories
+ - 🛒  Add to cart functionality
+ - 🔍Real time product search
+ - 📱Fully responsive UI
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+--- 
+
+## 🛠️ Tech Stack
+
+    
+- **Frontend:** React.js, React Router
+- **Styling:** Tailwind CSS
+- **Deployment:** Netlify
+
+
+
+ 
+---
+
+## 📦 Installation
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/neerajkumar002/SnapShop.git
+cd SnapShop
+npm install
+
+```
+
+## Start development
+
+```bash
+ npm ruun dev
+
+```
+
+## Languages & tools
+
+- Vite
+- React
+- Node
+
+
+
+
+
+## 🌐 Live Demo
+[View SnapShop Live](https://snapmyshop.netlify.app/)
+
+
+## 📸 Screenshots 
+![Home Page](./screenshots/1.png)
+
+
+
+
+## 🙋‍♂️ Author
+### Neeraj Kumar
+- 🌐 Portfolio: [Link](https://neerajkumar-dev.netlify.app/)
