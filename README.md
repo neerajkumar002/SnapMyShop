@@ -58,7 +58,19 @@ npm install
 
 
 ## 📸 Screenshots 
-![Home Page](./screenshots/1.png)
+![Home Page](./public/screenshots/1.png)
+![Product Listing Page](./public/screenshots/2.png)
+![Login Page](./public/screenshots/3.png)
+![Register Page](./public/screenshots/4.png)
+![Cart Page](./public/screenshots/5.png)
+![Checkout Page](./public/screenshots/6.png)
+![Order Page](./public/screenshots/7.png)
+![Order Details Page](./public/screenshots/8.png)
+![Address Page](./public/screenshots/9.png)
+![Add Address Page](./public/screenshots/10.png)
+![Edit Address Page](./public/screenshots/11.png)
+
+
 
 
 
