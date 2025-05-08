@@ -44,7 +44,7 @@ const Navbar = () => {
     "
     >
       <div>
-        <h2 className="font-bold text-2xl">SnapShop</h2>
+        <h2 className="font-bold text-2xl">SnapMyShop</h2>
       </div>
       <div className="hidden lg:block">
         <ul className="flex gap-3  text-xl">
@@ -100,7 +100,11 @@ const Navbar = () => {
             )}
           </div>
         )}
-        {!userData && <Link to="/auth/login" className="text-xl">Login</Link>}
+        {!userData && (
+          <Link to="/auth/login" className="text-xl">
+            Login
+          </Link>
+        )}
         <button
           onClick={() => setIsOpen(true)}
           className=" lg:hidden cursor-pointer"
