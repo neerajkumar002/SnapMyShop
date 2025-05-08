@@ -1,6 +1,6 @@
- # 🛍️ SnapShop
+ # 🛍️ SnapMyShop
 
- **SanpShop** is a modern ecommerce frontend built with React. This project includes a clean UI, responsive design, and  features like product listing, search, cart, and more 
+ **SnapMyShop** is a modern ecommerce frontend built with React. This project includes a clean UI, responsive design, and  features like product listing, search, cart, and more 
 
  ---
 
@@ -30,8 +30,8 @@
 Clone the repo and install dependencies:
 
 ```bash
-git clone https://github.com/neerajkumar002/SnapShop.git
-cd SnapShop
+git clone https://github.com/neerajkumar002/SnapMyShop.git
+cd SnapMyShop
 npm install
 
 ```
@@ -54,7 +54,7 @@ npm install
 
 
 ## 🌐 Live Demo
-[View SnapShop Live](https://snapmyshop.netlify.app/)
+[View SnapMyShop Live](https://snapmyshop.netlify.app/)
 
 
 ## 📸 Screenshots 
